@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: intelligence-service
+  config:
+    import: optional:configserver:http://localhost:8888
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      base-url: ${OPENAI_BASE_URL}
+      chat:
+        options:
+          model: ${OPENAI_MODEL}

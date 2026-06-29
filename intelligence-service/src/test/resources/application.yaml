@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: intelligence-service
+  cloud:
+    config:
+      enabled: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/promptforge_intelligence_db
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  kafka:
+    bootstrap-servers: localhost:9092
+  ai:
+    openai:
+      api-key: mock-key
+      base-url: http://localhost:8089
+
+jwt:
+  secret: ${JWT_SECRET:PromptForge-jwt-secret-key-for-distributed-system-2026-secure-token-generation}

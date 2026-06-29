@@ -1,0 +1,68 @@
+# IDE and Tooling
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.settings/
+.classpath/
+.project/
+.factorypath
+out/
+
+# System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Compiled and Build Outputs
+**/target/
+**/bin/
+**/dist/
+**/.vite/
+**/build/
+
+# Dependency Directories
+**/node_modules/
+**/.pnp/
+.pnp.js
+
+# Archives and Packages
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.war
+*.ear
+*.jar
+!**/maven-wrapper.jar
+
+# Logs and Temp files
+*.log
+logs/
+temp/
+tmp/
+*.tmp
+*.temp
+
+# Markdown files
+*.md
+
+# Local Configuration and Databases
+redis-insight-connections.json
+skills-lock.json
+
+# Local Environment Variables and Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.staging.local
+.env.rc.local
+.env*.local
+*.env.*
+**/credentials.json
+**/secrets.yaml
+**/secrets.properties

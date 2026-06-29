@@ -1,0 +1,73 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # Auth (public) – strip /api prefix → account-service /auth/**
+        - id: account-auth-route
+          uri: lb://account-service
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+
+        # Billing / Subscription / Webhooks → account-service
+        - id: account-billing-route-me
+          uri: lb://account-service
+          predicates:
+            - Path=/api/me/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+
+        - id: account-billing-route-payments
+          uri: lb://account-service
+          predicates:
+            - Path=/api/payments/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+
+        - id: account-billing-route-webhooks
+          uri: lb://account-service
+          predicates:
+            - Path=/webhooks/**
+          filters:
+            - RewritePath=/webhooks/(?<segment>.*), /${segment}
+
+        # Workspace Service
+        - id: workspace-route
+          uri: lb://workspace-service
+          predicates:
+            - Path=/api/projects/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+
+        # Intelligence / Chat Service
+        - id: intelligence-route
+          uri: lb://intelligence-service
+          predicates:
+            - Path=/api/chat/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+app:
+  security:
+    public-routes:
+      - /api/auth/signup/**
+      - /api/auth/login
+      - /api/auth/verify-email
+      - /api/auth/resend-verification
+      - /api/auth/forgot-password
+      - /api/auth/reset-password
+      - /api/auth/verify-reset-code
+      - /webhooks/**
+      - /actuator/**

@@ -1,0 +1,53 @@
+server:
+  port: 9020
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/promptforge}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 2000
+            readTimeout: 5000
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: workspace-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+minio:
+  url: ${MINIO_URL:http://localhost:9000}
+  access-key: ${MINIO_ROOT_USER:minioadmin}
+  secret-key: ${MINIO_ROOT_PASSWORD:minioadmin}
+  project-bucket: ${MINIO_BUCKET_PROJECTS:projects}
+
+app:
+  preview:
+    base-url: http://localhost:9020/internal/v1/previews
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      default:
+        registerWithEureka: true
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 5
+  retry:
+    instances:
+      default:
+        maxAttempts: 3
+        waitDuration: 1s

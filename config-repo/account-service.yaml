@@ -1,0 +1,32 @@
+server:
+  port: 9050
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/promptforge}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 2000
+            readTimeout: 5000
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: account-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+app:
+  frontend:
+    url: http://localhost:5173

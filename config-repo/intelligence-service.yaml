@@ -1,0 +1,43 @@
+server:
+  port: 9030
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/promptforge}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: intelligence-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            loggerLevel: none
+            connectTimeout: 2000
+            readTimeout: 5000
+
+logging:
+  level:
+    com.mayur: INFO
+    org.springframework.cloud.openfeign: WARN
+    org.springframework.cloud.openfeign.support.SpringEncoder: WARN
+    feign: WARN
+    org.springframework.kafka: INFO
+    org.springframework.ai.chat.model.MessageAggregator: WARN
+    org.springframework.ai.model.tool: DEBUG
+    org.springframework.ai.tool.method: DEBUG
+    org.springframework.ai.util.json: DEBUG
+    com.mayur.distributed_promptforge.intelligence_service.llm.CodeGenerationTools: DEBUG
