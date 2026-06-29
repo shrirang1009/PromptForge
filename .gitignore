@@ -48,6 +48,8 @@ tmp/
 
 # Markdown files
 *.md
+!README.md
+!**/README.md
 
 # Local Configuration and Databases
 redis-insight-connections.json
